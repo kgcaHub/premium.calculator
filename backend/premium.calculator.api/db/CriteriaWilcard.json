@@ -1,0 +1,11 @@
+[
+    {  "State":"NY", "MonthOfBirth":"August", "MinAge":18, "MaxAge":45, "Premium":150.00  },
+    {  "State":"NY", "MonthOfBirth":"January", "MinAge":46, "MaxAge":65, "Premium":200.50  },
+    {  "State":"NY", "MonthOfBirth":"*", "MinAge":18, "MaxAge":65, "Premium":120.99  },
+    {  "State":"AL", "MonthOfBirth":"November", "MinAge":18, "MaxAge":65, "Premium":85.5  },
+    {  "State":"AL", "MonthOfBirth":"*", "MinAge":18, "MaxAge":65, "Premium":100.00  },
+    {  "State":"AK", "MonthOfBirth":"December", "MinAge":65, "Premium":175.20  },
+    {  "State":"AK", "MonthOfBirth":"December", "MinAge":18, "MaxAge":64, "Premium":125.16  },
+    {  "State":"AK", "MonthOfBirth":"*", "MinAge":18, "MaxAge":65, "Premium":100.80  },
+    {  "State":"*", "MonthOfBirth":"*", "MinAge":18, "MaxAge":65, "Premium":90.00  }
+]

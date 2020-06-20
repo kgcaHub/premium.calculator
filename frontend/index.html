@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Premium Calculator!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                Premium Calculator
+            </h1>
+
+            <div class="columns">
+                <div class="column is-one-third">
+                    <div class="field">
+                        <label class="label">Date of Birth</label>
+                        <div class="control">
+                            <input id="iptDateOfBirth" class="input" type="date" placeholder="Text input" onchange="SetDefaultValues()">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">State</label>
+                        <div class="control">
+                            <input id="iptState" class="input" type="text" placeholder="Text input" onchange="SetDefaultValues()">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Age</label>
+                        <div class="control">
+                            <input id="iptAge" class="input" type="number" placeholder="Text input" onchange="SetDefaultValues()">
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-half">
+                            <div class="control">
+                                <button class="button is-link is-fullwidth" onclick="GetPremiumValue()">Get
+                                    Value</button>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="control">
+                                <input id="iptPremium" class="input is-info" type="number" placeholder="0.00" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="field">
+                        <label class="label">Frequency</label>
+                        <div class="control ">
+                            <span class="select is-fullwidth">
+                                <select id="selFrequency" onchange="OnChangeFrequency()">
+                                    <option value=0 selected>Select</option>
+                                    <option value=1>Monthly</option>
+                                    <option value=3>Quarterly</option>
+                                    <option value=6>Semi-Annually</option>
+                                    <option value=12>Annually</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Annual</label>
+                        <div class="control">
+                            <input id="iptAnnual" class="input is-info" type="number" placeholder="Text input" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Monthly</label>
+                        <div class="control">
+                            <input id="iptMonthly" class="input is-info" type="number" placeholder="Text input"
+                                disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    var urlBackEnd = "https://localhost:5001/api/cignium/v1/premium-calculator";
+    var premium = 0.00;
+    var dateofbirth = "";
+    var state = "";
+    var age = 0;
+
+    function GetPremiumValue() {
+        this.GetControlValues();
+        this.CallApiPremium();
+    }
+
+    function GetControlValues()
+    {
+        this.dateofbirth = document.getElementById('iptDateOfBirth').value;
+        this.state = document.getElementById('iptState').value;
+        this.age = document.getElementById('iptAge').value;
+    }
+
+    function SuccessGetPremiumValue(jsonResponse) {
+        document.getElementById('iptPremium').value = jsonResponse.premium;
+        this.premium = jsonResponse.premium;
+    }
+
+    function AlertGetPremiumValue(message) {
+        alert(message);
+    }
+
+    function ErrorGetPremiumValue() {
+        alert("An unexpected error occurred please contact support");
+    }
+
+    function OnChangeFrequency() {
+        var e = document.getElementById('selFrequency');
+        var w = e.options[e.selectedIndex].value;
+        var monthly = 0;
+        var annually = 0;
+
+        if (w > 0) {
+            monthly = this.premium / w;
+            annually = this.premium * (12 / w);
+        }
+
+        document.getElementById('iptAnnual').value = annually;
+        document.getElementById('iptMonthly').value = monthly;
+    }
+
+    function SetDefaultValues(){
+        this.premium = 0.00;
+        document.getElementById('iptPremium').value  = this.premium;
+        document.getElementById('selFrequency').value = 0;
+        OnChangeFrequency();
+    }
+
+    function CallApiPremium() {
+        var req = new XMLHttpRequest();
+        req.open('GET', urlBackEnd, true);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.setRequestHeader("age", this.age);
+        req.setRequestHeader("dateofbirth", this.dateofbirth);
+        req.setRequestHeader("state", this.state);
+        req.onreadystatechange = function () {
+            stateChange(req);
+        };
+        req.send(null);
+    }
+
+    function stateChange(req) {
+        if (req.readyState === XMLHttpRequest.DONE) {
+            var response = {};
+
+            if (req.response !== "") {
+                if (req.responseType === "blob") {
+                    response = req.response;
+                }
+                else {
+                    if (isJon(req.response)) {
+                        response = JSON.parse(req.response);
+                    }
+                    else {
+                        response = req.response;
+                    }
+                }
+            }
+            switch (req.status) {
+                case 200:
+                    this.SuccessGetPremiumValue(response);
+                    break;
+                case 500:
+                    this.ErrorGetPremiumValue();
+                    break;
+                default:
+                    this.AlertGetPremiumValue(response);
+                    break;
+            }
+        }
+    }
+
+    function isJon(text) {
+        return (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
+            replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+            replace(/(?:^|:|,)(?:\s*\[)+/g, '')));
+    }
+</script>
+
+</html>
