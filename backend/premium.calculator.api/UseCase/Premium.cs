@@ -26,6 +26,12 @@ namespace premium.calculator.api.UseCase
         private void ValidateParams(Entity.PremiumResponse response, DateTime dateOfBirth,
                                         string state, int age)
         {
+            if(dateOfBirth.IsFuture())
+            {
+                throw new HttpException(HttpStatusCode.BadRequest,
+                                            "Date of birth can not be in future");
+            }
+
             if (age == dateOfBirth.GetAge())
             {
                 response.age = age;

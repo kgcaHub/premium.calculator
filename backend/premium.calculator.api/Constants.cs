@@ -17,5 +17,10 @@ namespace premium.calculator.api
 
             return _result;
         }
+
+        internal static bool IsFuture(this DateTime me)
+        {
+            return me > DateTime.Now;
+        }
     }
 }
