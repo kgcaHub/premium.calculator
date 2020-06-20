@@ -56,7 +56,7 @@ namespace premium.calculator.api.UseCase
 
         private void SearchPremium(Entity.PremiumResponse response)
         {
-            foreach (var _criteria in Constants.CriteriaWilcards)
+            foreach (var _criteria in Constants.CriteriaWildcards)
             {
                 if (_criteria.State.ToUpper() != response.state)
                 {

@@ -23,8 +23,8 @@ namespace premium.calculator.api
         public Startup(IConfiguration configuration)
         {
             this.Configuration = configuration;
-            Repository.CriteriaWilcards _premium = new Repository.CriteriaWilcards();
-            Constants.CriteriaWilcards = _premium.Read();
+            Repository.CriteriaWildcards _premium = new Repository.CriteriaWildcards();
+            Constants.CriteriaWildcards = _premium.Read();
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

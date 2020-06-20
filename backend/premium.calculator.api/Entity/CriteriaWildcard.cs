@@ -1,6 +1,6 @@
 namespace premium.calculator.api.Entity
 {
-    public class CriteriaWilcard
+    public class CriteriaWildcard
     {
         public string State {get; set;}
         public string MonthOfBirth {get; set;}
